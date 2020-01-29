@@ -1,0 +1,17 @@
+evaluate:
+  type: "shell"
+  timeout: 2500
+  shell: 
+    entrypoint: "python"
+    command: 
+      - "/autoscaler/autoscaler.py"
+      - "evaluate"
+metric:
+  type: "shell"
+  timeout: 60000
+  shell: 
+    entrypoint: "python"
+    command: 
+      - "/autoscaler/autoscaler.py"
+      - "metric"
+runMode: "per-resource"

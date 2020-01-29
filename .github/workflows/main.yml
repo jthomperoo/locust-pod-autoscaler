@@ -1,0 +1,48 @@
+name: main
+on: 
+  push:
+  pull_request:
+  release:
+    types: [created]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: '3.6.x'
+    - name: Check out code
+      uses: actions/checkout@v1
+    - name: Lint and test
+      run: | 
+        pip install -r requirements-dev.txt
+        pip install -r requirements.txt
+        make lint
+        make unittest
+    - uses: codecov/codecov-action@v1.0.3
+      if: github.repository == 'jthomperoo/locust-pod-autoscaler'
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
+        file: ./.coverage
+        flags: unittests
+        name: locust-pod-autoscaler-unittests
+    - name: Deploy
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      if: github.event_name != 'pull_request' && github.repository == 'jthomperoo/locust-pod-autoscaler'
+      run: |
+        if [ ${{ github.event_name }} == "release" ]; then
+          # github.ref is in the form refs/tags/VERSION, so apply regex to just get version
+          VERSION=$(echo "${{ github.ref }}" | grep -P '([^\/]+$)' -o) 
+        else
+          VERSION=$(git rev-parse --short ${{ github.sha }})
+        fi
+        echo "$DOCKER_PASS" | docker login --username=$DOCKER_USER --password-stdin
+        docker push jthomperoo/locust-pod-autoscaler:${VERSION}
+        if [ ${{ github.event_name }} == "release" ]; then
+          docker tag jthomperoo/locust-pod-autoscaler:${VERSION} jthomperoo/locust-pod-autoscaler:latest
+          docker push jthomperoo/locust-pod-autoscaler:latest
+        fi

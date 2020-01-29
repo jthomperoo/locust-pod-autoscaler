@@ -1,0 +1,11 @@
+site_name: Locust Autoscaler
+theme: readthedocs
+nav:
+- Home: 'index.md'
+- 'User Guide': 
+  - 'Getting Started': 'user-guide/getting-started.md'
+  - Targets: 'user-guide/targets.md'
+  - Decay: 'user-guide/decay.md'
+- Reference:
+  - 'Autoscaler Configuration': 'reference/autoscaler-config.md'
+  - 'Evaluation Configuration': 'reference/evaluation-config.md'
