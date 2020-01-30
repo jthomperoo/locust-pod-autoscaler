@@ -15,12 +15,20 @@ jobs:
         python-version: '3.6.x'
     - name: Check out code
       uses: actions/checkout@v1
-    - name: Lint and test
+    - name: Lint, test and build
       run: | 
         pip install -r requirements-dev.txt
         pip install -r requirements.txt
         make lint
         make unittest
+        # Build
+        if [ ${{ github.event_name }} == "release" ]; then
+          # github.ref is in the form refs/tags/VERSION, so apply regex to just get version
+          VERSION=$(echo "${{ github.ref }}" | grep -P '([^\/]+$)' -o) 
+        else
+          VERSION=$(git rev-parse --short ${{ github.sha }})
+        fi
+        make docker VERSION=${VERSION}
     - uses: codecov/codecov-action@v1.0.3
       if: github.repository == 'jthomperoo/locust-pod-autoscaler'
       with:

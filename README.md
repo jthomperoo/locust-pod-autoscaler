@@ -36,12 +36,12 @@ Developing this project requires these dependencies:
 
 Python development dependencies can be installed with:  
 ```bash
-pip install -f requirements-dev.txt
+pip install -r requirements-dev.txt
 ```
 
 Project dependencies can be installed with:  
 ```bash
-pip install -f requirements.txt
+pip install -r requirements.txt
 ```
 
 To view docs locally, requires:
