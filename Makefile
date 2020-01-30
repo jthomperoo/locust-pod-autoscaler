@@ -9,6 +9,7 @@ default:
 unittest:
 	@echo "=============Running unit tests============="
 	coverage run --omit="*/test*" -m pytest
+	coverage xml
 
 lint:
 	@echo "=============Linting============="

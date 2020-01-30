@@ -1,3 +1,4 @@
 *.csv
 .coverage
 __pycache__
+coverage.xml

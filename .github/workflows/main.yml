@@ -33,7 +33,7 @@ jobs:
       if: github.repository == 'jthomperoo/locust-pod-autoscaler'
       with:
         token: ${{secrets.CODECOV_TOKEN}}
-        file: ./.coverage
+        file: ./coverage.xml
         flags: unittests
         name: locust-pod-autoscaler-unittests
     - name: Deploy
