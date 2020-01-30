@@ -28,7 +28,7 @@ jobs:
         else
           VERSION=$(git rev-parse --short ${{ github.sha }})
         fi
-        make docker VERSION=${VERSION}
+        make VERSION=${VERSION}
     - uses: codecov/codecov-action@v1.0.3
       if: github.repository == 'jthomperoo/locust-pod-autoscaler'
       with:
